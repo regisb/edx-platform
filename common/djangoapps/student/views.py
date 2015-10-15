@@ -102,6 +102,8 @@ from util.password_policy_validators import (
     validate_password_dictionary
 )
 
+import recommended.courses
+
 import third_party_auth
 from third_party_auth import pipeline, provider
 from student.helpers import (
@@ -663,6 +665,9 @@ def dashboard(request):
     else:
         redirect_message = ''
 
+    # Get a list of recommended courses
+    recommended_courses = recommended.courses.for_user(user)
+
     context = {
         'enrollment_message': enrollment_message,
         'redirect_message': redirect_message,
@@ -692,6 +697,7 @@ def dashboard(request):
         'order_history_list': order_history_list,
         'courses_requirements_not_met': courses_requirements_not_met,
         'nav_hidden': True,
+        'recommended_courses': recommended_courses,
     }
 
     return render_to_response('dashboard.html', context)

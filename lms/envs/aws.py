@@ -719,3 +719,11 @@ JWT_EXPIRATION = ENV_TOKENS.get('JWT_EXPIRATION', JWT_EXPIRATION)
 
 PROCTORING_BACKEND_PROVIDER = AUTH_TOKENS.get("PROCTORING_BACKEND_PROVIDER", PROCTORING_BACKEND_PROVIDER)
 PROCTORING_SETTINGS = ENV_TOKENS.get("PROCTORING_SETTINGS", PROCTORING_SETTINGS)
+
+################### Recommendations
+CACHES['recommendations'] = {
+    'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+    'LOCATION': '/var/tmp/recommendations',
+    'KEY_FUNCTION': 'util.memcache.safe_key',
+    'TIMEOUT': 30000,# TODO this might be a tad too long
+}

@@ -7,6 +7,7 @@ import third_party_auth
 from third_party_auth import pipeline
 from microsite_configuration import microsite
 from django.core.urlresolvers import reverse
+from courseware.courses import course_image_url
 import json
 %>
 
@@ -155,6 +156,60 @@ import json
       <p class="copy">Check out our recently launched courses and what's new in your favorite subjects</p>
       <p><a class="btn-find-courses" href="${marketing_link('COURSES')}">${_("Find New Courses")}</a></p>
     </div>
+  % endif
+
+  % if len(recommended_courses) > 0:
+  <section class="my-courses" role="main" aria-label="Content">
+    <header class="wrapper-header-courses">
+      <h2 class="header-courses">${_("Recommended Courses")}</h2>
+    </header>
+
+
+    <ul class="listing-courses">
+        <div style="width: 100%; display: table;">
+        % for course in recommended_courses:
+            <div>
+                <div style="width: 66%; float: left; background: url(${course_image_url(course)}) no-repeat scroll 0px 50%;">
+                    <div style="background-color: rgba(255, 255, 255, 0.9); padding: 20px;">
+                        <header>
+                            <h2>${course.display_name}</h2>
+                        </header>
+                        <p>${course.display_org_with_default}</p>
+                        <p>
+                          % if course.has_ended():
+                            ${_("Ended - {end_date}").format(end_date=course.end_datetime_text("SHORT_DATE"))}
+                          % elif course.has_started():
+                            ${_("Started - {start_date}").format(start_date=course.start_datetime_text("SHORT_DATE"))}
+                          % elif course.start_date_is_still_default: # Course start date TBD
+                            ${_("Coming Soon")}
+                          % elif course.starts_within(days=5):   # hasn't started yet
+                            ${_("Starts - {start_date}").format(start_date=course.start_datetime_text("DAY_AND_TIME"))}
+                          % else:   # hasn't started yet
+                            ${_("Starts - {start_date}").format(start_date=course.start_datetime_text("SHORT_DATE"))}
+                          % endif
+                        </p>
+                    </div>
+                </div>
+
+                <div style="width: 33%; float: right; padding-top: 20px;">
+                    <button class="btn btn-primary btn-large" style="width: 100%;">
+                        ENROLL
+                    </button>
+                    <p style="text-align: center; margin-top: 15px;">
+                        <a href="${reverse('about_course', args=[course.id.to_deprecated_string()])}">LEARN MORE</a>
+                    </p>
+                        <!--<header class="course-image">-->
+                            <!--<div class="cover-image">-->
+                                <!--<div class="learn-more" aria-hidden=true>${_("LEARN MORE")}</div>-->
+                            <!--</div>-->
+                        <!--</header>-->
+                    <!--</a>-->
+                </div>
+            </div>
+        % endfor
+        </div>
+    </ul>
+  </section>
   % endif
 
   <section class="profile-sidebar" id="profile-sidebar" role="region" aria-label="Account Status Info">
