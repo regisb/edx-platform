@@ -784,6 +784,20 @@ def _progress(request, course_key, student_id):
 
     return response
 
+@transaction.non_atomic_requests
+@login_required
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
+@ensure_valid_course_key
+def progress_percent(request, course_id):
+    """ Return the user's course progress (in %), JSON-formatted. """
+    course_key = CourseKey.from_string(course_id)
+    with modulestore().bulk_operations(course_key):
+        course = get_course_with_access(request.user, 'load', course_key, depth=None, check_if_enrolled=True)
+        grade_summary = grades.grade(request.user, course)
+        return HttpResponse(json.dumps({
+            "progress": grade_summary['percent'] * 100
+        }))
+
 
 def _credit_course_requirements(course_key, student):
     """Return information about which credit requirements a user has satisfied.

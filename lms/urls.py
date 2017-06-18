@@ -504,6 +504,13 @@ urlpatterns += (
         'courseware.views.views.progress',
         name='progress',
     ),
+    url(
+        r'^courses/{}/progress_percent$'.format(
+            settings.COURSE_ID_PATTERN,
+        ),
+        'courseware.views.views.progress_percent',
+        name='progress_percent',
+    ),
     # Takes optional student_id for instructor use--shows profile as that student sees it.
     url(
         r'^courses/{}/progress/(?P<student_id>[^/]*)/$'.format(

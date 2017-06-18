@@ -100,6 +100,7 @@ from student.helpers import (
           % else:
             <span>${course_overview.display_name_with_default}</span>
           % endif
+          <span data-course-key="${enrollment.course_id}" class="progress-percent"></span><!--TODO add spinner here?-->
         </h3>
         <div class="course-info">
           <span class="info-university">${course_overview.display_org_with_default} - </span>
@@ -426,5 +427,9 @@ from student.helpers import (
                        $('.disable-look-unregister').click();
                    });
                }
+
+               $.getJSON("${reverse('progress_percent', args=[unicode(course_overview.id)])}", function(data) {
+                   $("[data-course-key='${enrollment.course_id}'].progress-percent").html("(" + Math.floor(data.progress) + "% progress)");
+               });
            });
 </script>
