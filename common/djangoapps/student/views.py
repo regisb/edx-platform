@@ -11,7 +11,7 @@ from urlparse import urljoin, urlsplit, parse_qs, urlunsplit
 
 from django.views.generic import TemplateView
 from pytz import UTC
-from requests import HTTPError
+from requests import HTTPError, ConnectionError
 from ipware.ip import get_ip
 
 import edx_oauth2_provider
@@ -707,11 +707,25 @@ def dashboard(request):
     else:
         redirect_message = ''
 
+    # Count the number of threads posted by user in each course
+    import lms.lib.comment_client as cc
+    discussion_count = 0
+    for course_enrollment in course_enrollments:
+        try:
+            course_threads = cc.Thread.search({
+                'course_id': unicode(course_enrollment.course_id),
+                'user_id': request.user.id
+            })
+            discussion_count += course_threads.thread_count
+        except (cc.CommentClient500Error, ConnectionError):
+            pass
+
     context = {
         'enrollment_message': enrollment_message,
         'redirect_message': redirect_message,
         'course_enrollments': course_enrollments,
         'course_optouts': course_optouts,
+        'discussion_count': discussion_count,
         'message': message,
         'staff_access': staff_access,
         'errored_courses': errored_courses,
