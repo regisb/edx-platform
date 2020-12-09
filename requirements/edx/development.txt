@@ -237,7 +237,7 @@ pytest-metadata==1.8.0    # via -r requirements/edx/testing.txt, pytest-json-rep
 pytest-randomly==3.5.0    # via -r requirements/edx/testing.txt
 pytest-xdist[psutil]==2.2.0  # via -r requirements/edx/testing.txt
 pytest==6.2.2             # via -r requirements/edx/testing.txt, pytest-attrib, pytest-cov, pytest-django, pytest-forked, pytest-json-report, pytest-metadata, pytest-randomly, pytest-xdist
-python-dateutil==2.4.0    # via -c requirements/edx/../constraints.txt, -r requirements/edx/testing.txt, analytics-python, botocore, edx-ace, edx-drf-extensions, edx-enterprise, edx-event-routing-backends, edx-proctoring, faker, freezegun, icalendar, ora2, xblock
+python-dateutil==2.8.1    # via -c requirements/edx/../constraints.txt, -r requirements/edx/testing.txt, analytics-python, botocore, edx-ace, edx-drf-extensions, edx-enterprise, edx-event-routing-backends, edx-proctoring, faker, freezegun, icalendar, ora2, xblock
 python-levenshtein==0.12.1  # via -r requirements/edx/testing.txt
 python-memcached==1.59    # via -r requirements/edx/testing.txt
 python-slugify==4.0.1     # via -r requirements/edx/testing.txt, code-annotations, transifex-client
